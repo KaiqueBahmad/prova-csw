@@ -16,7 +16,7 @@ public class LivroService {
     @Autowired
     private LivroRepository livroRepository;
 
-    private Livro criarLivro(CriarLivroDTO criarLivroDTO) {
+    public Livro criarLivro(CriarLivroDTO criarLivroDTO) {
         Livro livro = new Livro();
         livro.setAutor(criarLivroDTO.autor());
         livro.setAnoPublicacao(criarLivroDTO.anoPublicacao());
@@ -25,8 +25,9 @@ public class LivroService {
         return this.livroRepository.save(livro);
     }
 
-    private Livro atualizarLivro(AtualizarLivroDTO criarLivroDTO) {
+    public Livro atualizarLivro(Long id, AtualizarLivroDTO criarLivroDTO) {
         Livro livro = new Livro();
+        livro.setId(id);
         livro.setAutor(criarLivroDTO.autor());
         livro.setAnoPublicacao(criarLivroDTO.anoPublicacao());
         livro.setEditora(criarLivroDTO.editora());
