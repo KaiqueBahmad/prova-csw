@@ -6,13 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.senai.kaiquebt.biblioteca.dto.AtualizarLivroDTO;
 import com.senai.kaiquebt.biblioteca.dto.AtualizarUsuarioDTO;
-import com.senai.kaiquebt.biblioteca.dto.CriarLivroDTO;
 import com.senai.kaiquebt.biblioteca.dto.CriarUsuarioDTO;
-import com.senai.kaiquebt.biblioteca.entity.Livro;
 import com.senai.kaiquebt.biblioteca.entity.Usuario;
-import com.senai.kaiquebt.biblioteca.repository.LivroRepository;
 import com.senai.kaiquebt.biblioteca.repository.UsuarioRepository;
 
 @Service
