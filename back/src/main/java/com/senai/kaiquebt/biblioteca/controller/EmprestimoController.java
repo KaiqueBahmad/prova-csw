@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,12 +24,12 @@ public class EmprestimoController {
     @Autowired
     private EmprestimoService emprestimoService;
 
-    @PostMapping("/{livroId}/emprestar-para/{usuarioId}")
+    @PutMapping("/{livroId}/emprestar-para/{usuarioId}")
     public ResponseEntity<Emprestimo> emprestar(@PathVariable Long livroId, @PathVariable Long usuarioId) {
         return ResponseEntity.ok(this.emprestimoService.emprestar(livroId, usuarioId));
     }
 
-    @PostMapping("/emprestimo/{emprestimoId}/registrar-devolucao")
+    @PutMapping("/emprestimo/{emprestimoId}/registrar-devolucao")
     public ResponseEntity<Emprestimo> devolver(@PathVariable Long emprestimoId) {
         return ResponseEntity.ok(this.emprestimoService.devolver(emprestimoId));
     }
