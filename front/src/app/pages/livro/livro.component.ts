@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
+import { Livro } from '../../crud/livro.service';
 
 @Component({
   selector: 'app-livro',
-  imports: [ReactiveFormsModule, DatePicker, InputTextModule, ButtonModule, ToastModule],
+  imports: [ReactiveFormsModule, FormsModule, DatePicker, InputTextModule, ButtonModule, ToastModule],
   template: `
     <p-toast></p-toast>
     <div style="width: 100%; display: flex;">
@@ -16,19 +17,19 @@ import { ToastModule } from 'primeng/toast';
         <h1>Cadastre um novo livro 📖 </h1>  
         <div style="text-align: center;">
             <p>Titulo </p>
-            <input type="text" pInputText/>
+            <input type="text" pInputText [(ngModel)]="this.livro.titulo"/>
         </div>
         <div style="text-align: center;">
             <p>Autor</p>
-            <input type="text" pInputText/>
+            <input type="text" pInputText [(ngModel)]="this.livro.autor"/>
         </div>
         <div style="text-align: center;">
             <p>Editora</p>
-            <input type="text" pInputText/>
+            <input type="text" pInputText [(ngModel)]="this.livro.editora"/>
         </div>
         <div style="text-align: center;">
             <p>Ano de Publicacao</p>
-            <p-date-picker dateFormat="yy" view="year" placeholder="2025">
+            <p-date-picker dateFormat="yy" view="year" placeholder="2025" (onSelect)="changeAnoPublicacao($event)">
       
             </p-date-picker>
         </div>
@@ -50,14 +51,23 @@ export class LivroComponent {
 
   }
 
+  livro:Livro = {};
+
   cadastrarLivro() {
     this.messageService.add({
       severity: 'success',
       summary: 'Salvo',
-      detail: 'Novo Livro foi registrado com sucesso!',
+      detail: 'Novo Livro foi registrado com sucesso! '+JSON.stringify(this.livro),
       life: 3000
     });
   }
 
+  changeAnoPublicacao(date: Date) {
+    if (!date.getFullYear()) {
+      this.livro.anoPublicacao = undefined;
+      return;
+    }
+    this.livro.anoPublicacao = date.getFullYear();
+  }
 
 }
