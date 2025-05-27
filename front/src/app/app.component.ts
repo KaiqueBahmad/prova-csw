@@ -39,15 +39,20 @@ export class AppComponent implements OnInit {
         command: () => {
           this.router.navigate(["livro"])
         }
-
       },
       {
         label: 'Usuarios',
-        icon: 'pi pi-user'
+        icon: 'pi pi-user',
+        command: () => {
+          this.router.navigate(["usuario"])
+        }
       },
       {
         label: 'Empréstimos',
-        icon: 'pi pi-tags'
+        icon: 'pi pi-tags',
+        command: () => {
+          this.router.navigate(["emprestimo"])
+        }
       }
     ]
   }
