@@ -26,6 +26,9 @@ public class LivroService {
     }
 
     public Livro atualizarLivro(Long id, AtualizarLivroDTO criarLivroDTO) {
+        if (!this.livroRepository.existsById(id)) {
+            throw new IllegalArgumentException("Livro não existe");
+        }
         Livro livro = new Livro();
         livro.setId(id);
         livro.setAutor(criarLivroDTO.autor());

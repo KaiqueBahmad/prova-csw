@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.senai.kaiquebt.biblioteca.dto.AtualizarLivroDTO;
 import com.senai.kaiquebt.biblioteca.dto.CriarLivroDTO;
 import com.senai.kaiquebt.biblioteca.entity.Livro;
 import com.senai.kaiquebt.biblioteca.service.LivroService;
 
-@Controller
 @RequestMapping("/api/livro")
+@RestController
 @CrossOrigin("*")
 public class LivroController {
     @Autowired

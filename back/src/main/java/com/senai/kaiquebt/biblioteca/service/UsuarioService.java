@@ -25,6 +25,9 @@ public class UsuarioService {
     }
 
     public Usuario atualizarUsuario(Long id, AtualizarUsuarioDTO atualizarUsuarioDTO) {
+        if (!this.usuarioRepository.existsById(id)) {
+            throw new IllegalArgumentException("Usuario não existe");
+        }
         Usuario usuario = new Usuario();
         usuario.setCurso(atualizarUsuarioDTO.curso());
         usuario.setMatricula(atualizarUsuarioDTO.matricula());

@@ -9,13 +9,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 version = "${info.build.version}",
                 description = "${info.app.description}",
                 contact = @io.swagger.v3.oas.annotations.info.Contact(
-                        name = "Time Arquitetura e APIs",
-                        email = "jonatas.edo@gmail.com")))
+                        name = "Kaique Bahmad",
+                        email = "kaiquebahmadt@gmail.com")))
 @SpringBootApplication
-public class AluguelVeiculoApiApplication {
+public class BibliotecaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AluguelVeiculoApiApplication.class, args);
+        SpringApplication.run(BibliotecaApplication.class, args);
     }
 
 }

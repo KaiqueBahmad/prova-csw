@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.senai.kaiquebt.biblioteca.dto.AtualizarUsuarioDTO;
 import com.senai.kaiquebt.biblioteca.dto.CriarUsuarioDTO;
 import com.senai.kaiquebt.biblioteca.entity.Usuario;
 import com.senai.kaiquebt.biblioteca.service.UsuarioService;
 
-@Controller
+@RestController
 @RequestMapping("/api/usuario")
 @CrossOrigin("*")
 public class UsuarioController {
