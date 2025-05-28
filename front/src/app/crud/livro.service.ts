@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 
 export interface Livro {
@@ -18,7 +18,16 @@ export class LivroService {
 
   constructor(private http: HttpClient) { }
 
-
+  private livroSubject: Subject<Livro[]> = new Subject<Livro[]>();
+  public livro$: Observable<Livro[]> = this.livroSubject.asObservable();
+  
+  public refresh() {
+    this.http.get<Livro[]>("http://localhost:8080/api/livro").subscribe(
+      (income_livros) => {
+        this.livroSubject.next(income_livros);
+      }
+    );
+  }
 
   public createLivro(livro:Livro): Observable<Livro> {
     return this.http.post("http://localhost:8080/api/livro", livro)
