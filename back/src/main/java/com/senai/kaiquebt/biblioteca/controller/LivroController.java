@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,7 @@ import com.senai.kaiquebt.biblioteca.dto.AtualizarLivroDTO;
 import com.senai.kaiquebt.biblioteca.dto.CriarLivroDTO;
 import com.senai.kaiquebt.biblioteca.entity.Livro;
 import com.senai.kaiquebt.biblioteca.service.LivroService;
+
 
 @RequestMapping("/api/livro")
 @RestController
@@ -27,12 +29,12 @@ public class LivroController {
     private LivroService livroService;
 
     @PostMapping
-    public ResponseEntity<Livro> addLivro(CriarLivroDTO livroDto) {
+    public ResponseEntity<Livro> addLivro(@RequestBody CriarLivroDTO livroDto) {
         return ResponseEntity.ok(this.livroService.criarLivro(livroDto));
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Livro> updLivro(@PathVariable Long id, AtualizarLivroDTO livroDto) {
+    public ResponseEntity<Livro> updLivro(@PathVariable Long id, @RequestBody AtualizarLivroDTO livroDto) {
         return ResponseEntity.ok(this.livroService.atualizarLivro(id, livroDto));
     }
 

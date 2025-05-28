@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { DatePicker } from 'primeng/datepicker';
+import { DatePicker, DatePickerYearChangeEvent } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { Livro, LivroService } from '../../crud/livro.service';
@@ -29,7 +29,7 @@ import { Livro, LivroService } from '../../crud/livro.service';
         </div>
         <div style="text-align: center;">
             <p>Ano de Publicacao</p>
-            <p-date-picker dateFormat="yy" view="year" placeholder="2025" (onSelect)="changeAnoPublicacao($event)">
+            <p-date-picker dateFormat="yy" view="year" placeholder="2025" [(ngModel)]="anoPublicacao">
       
             </p-date-picker>
         </div>
@@ -52,6 +52,7 @@ export class LivroComponent {
   }
 
   livro:Livro = {};
+  anoPublicacao?: Date;
 
   faltando(isso: string) {
     this.messageService.add({
@@ -63,23 +64,24 @@ export class LivroComponent {
   }
 
   cadastrarLivro() {
-    if (!this.livro.anoPublicacao){
-      this.faltando("Ano de publicação")
+    this.livro.anoPublicacao = this.anoPublicacao? this.anoPublicacao.getFullYear() : undefined;
+    
+    if (!this.livro.titulo) {
+      this.faltando("Titulo");
       return;
     }
-
     if (!this.livro.autor) {
       this.faltando("Autor");
       return;
     }
-
+    
     if (!this.livro.editora) {
       this.faltando("Editora");
       return;  
     }
-
-    if (!this.livro.titulo) {
-      this.faltando("Titulo");
+    
+    if (!this.livro.anoPublicacao){
+      this.faltando("Ano de publicação")
       return;
     }
 
@@ -88,7 +90,7 @@ export class LivroComponent {
         this.messageService.add({
           severity: 'success',
           summary: 'Salvo',
-          detail: 'Novo Livro foi registrado com sucesso! '+JSON.stringify(created),
+          detail: 'Novo Livro foi registrado com sucesso! ID: '+created.id,
           life: 3000
         });
       },
@@ -102,13 +104,4 @@ export class LivroComponent {
       },
     });
   }
-
-  changeAnoPublicacao(date: Date) {
-    if (!date.getFullYear()) {
-      this.livro.anoPublicacao = undefined;
-      return;
-    }
-    this.livro.anoPublicacao = date.getFullYear();
-  }
-
 }
