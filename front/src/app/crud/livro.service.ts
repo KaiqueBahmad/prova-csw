@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 
 export interface Livro {
@@ -14,5 +16,11 @@ export interface Livro {
 })
 export class LivroService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+
+
+  public createLivro(livro:Livro): Observable<Livro> {
+    return this.http.post("http://localhost:8080/api/livro", livro)
+  }
 }

@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { Livro } from '../../crud/livro.service';
+import { Livro, LivroService } from '../../crud/livro.service';
 
 @Component({
   selector: 'app-livro',
@@ -47,18 +47,59 @@ import { Livro } from '../../crud/livro.service';
   `
 })
 export class LivroComponent {
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private livroService: LivroService) {
 
   }
 
   livro:Livro = {};
 
-  cadastrarLivro() {
+  faltando(isso: string) {
     this.messageService.add({
-      severity: 'success',
-      summary: 'Salvo',
-      detail: 'Novo Livro foi registrado com sucesso! '+JSON.stringify(this.livro),
-      life: 3000
+      severity: 'warn',
+      summary: 'Atenção',
+      detail: 'Preencha o campo '+isso,
+      life: 10000
+    });
+  }
+
+  cadastrarLivro() {
+    if (!this.livro.anoPublicacao){
+      this.faltando("Ano de publicação")
+      return;
+    }
+
+    if (!this.livro.autor) {
+      this.faltando("Autor");
+      return;
+    }
+
+    if (!this.livro.editora) {
+      this.faltando("Editora");
+      return;  
+    }
+
+    if (!this.livro.titulo) {
+      this.faltando("Titulo");
+      return;
+    }
+
+    this.livroService.createLivro(this.livro).subscribe({
+      next: (created) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Salvo',
+          detail: 'Novo Livro foi registrado com sucesso! '+JSON.stringify(created),
+          life: 3000
+        });
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Houve um erro ao salvar o livro '+JSON.stringify(error.error.trace),
+          life: 10000
+        });
+      },
     });
   }
 
