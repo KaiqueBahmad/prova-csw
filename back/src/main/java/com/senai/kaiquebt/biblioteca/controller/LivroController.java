@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senai.kaiquebt.biblioteca.BibliotecaApplication;
 import com.senai.kaiquebt.biblioteca.dto.AtualizarLivroDTO;
 import com.senai.kaiquebt.biblioteca.dto.CriarLivroDTO;
 import com.senai.kaiquebt.biblioteca.entity.Livro;
@@ -43,6 +45,14 @@ public class LivroController {
         return ResponseEntity.ok(this.livroService.buscarLivros());
     }
 
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<String> deletarLivro(@PathVariable Long id) {
+        if (this.livroService.removerLivro(id)) {
+            return ResponseEntity.ok(BibliotecaApplication.asMessage("Livro deletado com sucesso"));
+        } else {
+            return ResponseEntity.badRequest().body(BibliotecaApplication.asMessage("Livro não foi deletado"));
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Livro> getLivro(@PathVariable Long id) {
         Optional<Livro> livroOpt = this.livroService.buscarLivro(id);
@@ -53,13 +63,7 @@ public class LivroController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletarLivro(@PathVariable Long id) {
-        if (this.livroService.removerLivro(id)) {
-            return ResponseEntity.ok("Livro deletado com sucesso");
-        } else {
-            return ResponseEntity.badRequest().body("Livro não foi deletado");
-        }
-    }
+
+    
 
 }

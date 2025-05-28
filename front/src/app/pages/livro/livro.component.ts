@@ -63,7 +63,7 @@ import { CardModule } from 'primeng/card';
                 </div>
                 <div style="display: flex; gap:10px;">
                   <p-button icon="pi pi-pencil" severity="info" aria-label="Editar" />
-                  <p-button icon="pi pi-trash" severity="danger" aria-label="Deletar" />
+                  <p-button icon="pi pi-trash" severity="danger" aria-label="Deletar" (onClick)="deletarLivro(item.id)" />
                 </div>
               </div>
             </p-card>
@@ -136,6 +136,7 @@ export class LivroComponent {
           detail: 'Novo Livro foi registrado com sucesso! ID: '+created.id,
           life: 3000
         });
+        this.livroService.refresh();
       },
       error: (error) => {
         this.messageService.add({
@@ -144,9 +145,29 @@ export class LivroComponent {
           detail: 'Houve um erro ao salvar o livro '+JSON.stringify(error.error.trace),
           life: 10000
         });
+      }
+    });
+  }
+
+  deletarLivro(id: number|undefined) {
+    if (!id) {
+      return
+    }
+    if (!confirm("Realmente deseja deletar? ")) {
+      return;
+    }
+    
+    this.livroService.deletarLivro(id).subscribe({
+      next: (x) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Salvo',
+          detail: 'Registro deletado com sucesso',
+          life: 3000
+        });
+        this.livroService.refresh();
       },
-      complete: () => {
-        this.livroService.refresh()
+      error: (x) => {
       }
     });
   }

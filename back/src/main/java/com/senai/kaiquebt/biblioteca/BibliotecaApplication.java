@@ -18,4 +18,8 @@ public class BibliotecaApplication {
         SpringApplication.run(BibliotecaApplication.class, args);
     }
 
+    public static String asMessage(String msg) {
+        return String.format("{\"message\": \"%s\"}", msg);
+    }
+
 }

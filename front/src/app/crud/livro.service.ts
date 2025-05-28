@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 
 export interface Livro {
@@ -30,6 +30,10 @@ export class LivroService {
   }
 
   public createLivro(livro:Livro): Observable<Livro> {
-    return this.http.post("http://localhost:8080/api/livro", livro)
+    return this.http.post("http://localhost:8080/api/livro", livro);
+  }
+
+  public deletarLivro(id: number): Observable<string> {
+    return this.http.put<string>("http://localhost:8080/api/livro/delete/"+id, {});
   }
 }
