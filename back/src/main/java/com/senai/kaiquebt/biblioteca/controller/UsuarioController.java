@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senai.kaiquebt.biblioteca.BibliotecaApplication;
 import com.senai.kaiquebt.biblioteca.dto.AtualizarUsuarioDTO;
 import com.senai.kaiquebt.biblioteca.dto.CriarUsuarioDTO;
 import com.senai.kaiquebt.biblioteca.entity.Usuario;
@@ -44,6 +46,14 @@ public class UsuarioController {
             this.usuarioService.buscarUsuarios()
         );
     }
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<String> deletarUsuario(@PathVariable Long id) {
+        if (this.usuarioService.removerUsuario(id)) {
+            return ResponseEntity.ok(BibliotecaApplication.asMessage("Usuario deletado com sucesso."));
+        } else {
+            return ResponseEntity.badRequest().body(BibliotecaApplication.asMessage("Usuario não deletado"));
+        }
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUsuario(@PathVariable Long id) {
@@ -55,14 +65,6 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletarUsuario(@PathVariable Long id) {
-        if (this.usuarioService.removerUsuario(id)) {
-            return ResponseEntity.ok("Usuario deletado com sucesso.");
-        } else {
-            return ResponseEntity.badRequest().body("Usuario não deletado");
-        }
-    }
 
 
 }
