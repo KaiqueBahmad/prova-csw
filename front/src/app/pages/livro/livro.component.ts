@@ -15,7 +15,12 @@ import { CardModule } from 'primeng/card';
     <p-toast></p-toast>
     <div style="width: 100%; display: flex;">
       <div style="flex: 1; display: flex; align-items: center; flex-direction: column; gap: 25px;">
-        <h1>Cadastre um novo livro 📖 </h1>  
+        <h1>Cadastre um novo livro 📖 </h1>
+        @if(this.editandoId) {
+          <p>Editando livro: {{this.editandoId}}</p>
+          <p-button (onClick)="setSelected(undefined)">Cancelar</p-button>
+        }
+
         <div style="text-align: center;">
             <p>Titulo </p>
             <input type="text" pInputText [(ngModel)]="this.livro.titulo"/>
@@ -62,7 +67,7 @@ import { CardModule } from 'primeng/card';
                   </p>
                 </div>
                 <div style="display: flex; gap:10px;">
-                  <p-button icon="pi pi-pencil" severity="info" aria-label="Editar" />
+                  <p-button icon="pi pi-pencil" severity="info" aria-label="Editar" (onClick)="setSelected(item.id)"/>
                   <p-button icon="pi pi-trash" severity="danger" aria-label="Deletar" (onClick)="deletarLivro(item.id)" />
                 </div>
               </div>
@@ -92,7 +97,7 @@ export class LivroComponent {
   stringfai(a:any) {
     return JSON.stringify(a);
   }
-
+  editandoId?: number = undefined;
   livros:Livro[] = [];
   livro:Livro = {};
   anoPublicacao?: Date;
@@ -104,6 +109,20 @@ export class LivroComponent {
       detail: 'Preencha o campo '+isso,
       life: 10000
     });
+  }
+
+  setSelected(id?: number) {
+    this.editandoId = id;
+    if (!this.editandoId) {
+      this.livro = {}
+    }
+    this.livros.forEach(
+      (livro) => {
+        if (livro.id == this.editandoId) {
+          this.livro = JSON.parse(JSON.stringify(livro));
+        }
+      }
+    );
   }
 
   cadastrarLivro() {
@@ -127,26 +146,49 @@ export class LivroComponent {
       this.faltando("Ano de publicação")
       return;
     }
-
-    this.livroService.createLivro(this.livro).subscribe({
-      next: (created) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Salvo',
-          detail: 'Novo Livro foi registrado com sucesso! ID: '+created.id,
-          life: 3000
-        });
-        this.livroService.refresh();
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Houve um erro ao salvar o livro '+JSON.stringify(error.error.trace),
-          life: 10000
-        });
-      }
-    });
+    let func;
+    if (this.editandoId) {
+      this.livroService.udpateLivro(this.livro).subscribe({
+        next: (created) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Salvo',
+            detail: 'Livro foi registrado com sucesso! ID: '+created.id,
+            life: 3000
+          });
+          this.livroService.refresh();
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Houve um erro ao salvar o livro '+JSON.stringify(error.error.trace),
+            life: 10000
+          });
+        }
+      });
+    } else {
+      this.livroService.createLivro(this.livro).subscribe({
+        next: (created) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Salvo',
+            detail: 'Livro foi registrado com sucesso! ID: '+created.id,
+            life: 3000
+          });
+          this.livroService.refresh();
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Houve um erro ao salvar o livro '+JSON.stringify(error.error.trace),
+            life: 10000
+          });
+        }
+      });
+    }
+  
   }
 
   deletarLivro(id: number|undefined) {

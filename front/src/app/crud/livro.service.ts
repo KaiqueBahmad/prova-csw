@@ -33,6 +33,11 @@ export class LivroService {
     return this.http.post("http://localhost:8080/api/livro", livro);
   }
 
+  public udpateLivro(livro:Livro): Observable<Livro> {
+    return this.http.post("http://localhost:8080/api/livro/"+livro.id, livro);
+  }
+
+
   public deletarLivro(id: number): Observable<string> {
     return this.http.put<string>("http://localhost:8080/api/livro/delete/"+id, {});
   }
